@@ -78,7 +78,7 @@ public class MyTree implements Tree{
         if (current!=null){
             max++;
             leftMax=maxHight(current.leftChild);
-            leftMax=maxHight(current.rightChild);
+            rightMax=maxHight(current.rightChild);
             max+=leftMax>=rightMax?leftMax:rightMax;
         }
         return max;
