@@ -104,7 +104,86 @@ public class MyTree implements Tree{
         }
         return minNode;
     }
-
+    public boolean delete1(int key) {
+        Node curr=root;
+        Node parent=root;
+        boolean left=false;
+        while (curr.data!=key){
+            parent=curr;
+            if (curr.data>key){
+                curr=curr.leftChild;
+                left=true;
+            }else{
+                curr=curr.rightChild;
+                left=false;
+            }
+        }
+        if (curr==null){
+            return false;
+        }
+        if (curr.leftChild==null&&curr.rightChild==null){
+            if (curr==root){
+                root=null;
+                return true;
+            }
+            if (left){
+                parent.leftChild=null;
+            }else{
+                parent.rightChild=null;
+            }
+          return true;
+        }
+        if (curr.leftChild==null&&curr.rightChild!=null){
+            if (curr==root){
+                root=curr.rightChild;
+            }else if(left){
+                parent.leftChild=curr.rightChild;
+            }else{
+                parent.rightChild=curr.rightChild;
+            }
+            return true;
+        }
+        if (curr.leftChild!=null&&curr.rightChild==null){
+            if (curr==root){
+                root=curr.leftChild;
+            }else if(left){
+                parent.leftChild=curr.leftChild;
+            }else{
+                parent.rightChild=curr.leftChild;
+            }
+            return true;
+        }
+        //有两个子节点,如果要删除得节点在panrent得左边，就左右右右右找到当前左节点最右的子节点，赋值，删除最右的子节点，反过来是右左左左左
+        if(curr.leftChild!=null&&curr.rightChild!=null){
+            if (left){
+                curr=curr.leftChild;
+               /* if (curr.rightChild==null){
+                    parent.leftChild=curr.leftChild;
+                }*/
+                Node par=curr;
+                while(curr.rightChild!=null){
+                    par=curr;
+                    curr=curr.rightChild;
+                }
+                parent.leftChild.data=curr.data;
+                par.rightChild=null;
+            }else{
+                curr=curr.rightChild;
+               /* if (curr.leftChild==null){
+                    parent.rightChild=curr.rightChild;
+                }*/
+                Node par=curr;
+                while(curr.leftChild!=null){
+                    par=curr;
+                    curr=curr.leftChild;
+                }
+                parent.rightChild.data=curr.data;
+                par.leftChild=null;
+            }
+            return true;
+        }
+        return false;
+    }
     public boolean delete(int key) {
         Node current = root;
         Node parent = root;
@@ -200,14 +279,45 @@ public class MyTree implements Tree{
         bt.insert(25);
         bt.insert(85);
         bt.insert(100);
+        bt.insert(101);
+        bt.insert(70);
+        bt.insert(75);
+        bt.insert(55);
+        bt.insert(65);
+        bt.insert(110);
+
           bt.infixOrder(bt.root);
-        bt.delete(10);//删除没有子节点的节点
-       bt.delete(30);//删除有一个子节点的节点
-        bt.delete(80);//删除有两个子节点的节点
+        bt.delete1(10);//删除没有子节点的节点
+       bt.delete1(30);//删除有一个子节点的节点
+        bt.delete1(80);//删除有两个子节点的节点
         System.out.println(bt.maxHight(bt.root));
         System.out.println(bt.findMax().data);
         System.out.println(bt.findMin().data);
         System.out.println(bt.find(100));
         System.out.println(bt.find(200));
+        bt.infixOrder(bt.root);
     }
+    /**
+     * 删除元素
+     * 删除元素如果细分的话，可以分为4中：没有子节点，只有左节点，只有右节点，有两个子节点
+     * 1）没有子节点这种情况比较简单，直接删除就可以了
+     * 2）只有左节点或右节点，这两种情况处理方式是一致的，只是方向相反，所以在一起讲了，
+     * 将删除节点的父节点的左节点（右节点）指向删除节点的子节点，将左节点（右节点）指向删除节点的父节点
+     * 3）有两个子节点，这种情况相对来说比较复杂一点：
+     * 找到删除节点的前驱节点或后继节点，然后将前驱或后继节点的值赋给删除节点，然后将前驱或后继节点删除。本质是删除前驱或后继节点
+     * 前驱节点的特点：
+     * 1）删除的左子节点没有右子节点，那么左子节点即为前驱节点
+     * 2）删除节点的左子节点有右子节点，那么最右边的最后一个节点即为前驱节点
+     * 后继节点的特点：
+     * 与前驱节点刚好相反，总是右子节点，或则右子节点的最左子节点;例如：删除节点为c ，那么前驱节点为 m，后继节点为n
+     *                                          a
+     *                                       /     \
+     *                                    b          c
+     *                                  / \         /  \
+     *                                d    e       f    g
+     *                              /  \  / \     / \   / \
+     * @param item 删除元素          h   i  j  k   l   m n   o
+     * @return 删除结果
+     */
+
 }
