@@ -1,15 +1,16 @@
 package com.reactor.test;
 
-public class MyTree implements Tree{
+public class MyTree implements Tree {
     protected Node root;
+
     public Node find(int key) {
-        Node cuNode =root;
-        while (cuNode!=null){
-            if (cuNode.data>key){
-                cuNode=cuNode.leftChild;
-            }else if (cuNode.data<key){
-                cuNode=cuNode.rightChild;
-            }else{
+        Node cuNode = root;
+        while (cuNode != null) {
+            if (cuNode.data > key) {
+                cuNode = cuNode.leftChild;
+            } else if (cuNode.data < key) {
+                cuNode = cuNode.rightChild;
+            } else {
                 return cuNode;
             }
 
@@ -19,23 +20,23 @@ public class MyTree implements Tree{
 
     public boolean insert(int data) {
         Node node = new Node(data);
-        if (root==null){
-            root=node;
-        }else {
-            Node parent ;
-            Node curr =root;
-            while (curr!=null){
-                parent=curr;
-                if (curr.data>data){
-                    curr=curr.leftChild;
-                    if (curr==null){
-                        parent.leftChild=node;
+        if (root == null) {
+            root = node;
+        } else {
+            Node parent;
+            Node curr = root;
+            while (curr != null) {
+                parent = curr;
+                if (curr.data > data) {
+                    curr = curr.leftChild;
+                    if (curr == null) {
+                        parent.leftChild = node;
                         return true;
                     }
-                }else if (curr.data<=data){
-                    curr=curr.rightChild;
-                    if (curr==null){
-                        parent.rightChild=node;
+                } else if (curr.data <= data) {
+                    curr = curr.rightChild;
+                    if (curr == null) {
+                        parent.rightChild = node;
                         return true;
                     }
                 }
@@ -44,203 +45,196 @@ public class MyTree implements Tree{
 
         return false;
     }
-  //中序遍历
+
+    //中序遍历
     public void infixOrder(Node current) {
-          if (current!=null){
-              infixOrder(current.leftChild);
-              System.out.print(current.data+"-");
-              infixOrder(current.rightChild);
-          }
+        if (current != null) {
+            infixOrder(current.leftChild);
+            System.out.print(current.data + "-");
+            infixOrder(current.rightChild);
+        }
     }
-//前序
+
+    //前序
     public void preOrder(Node current) {
-        if (current!=null){
-            System.out.print(current.data+"-");
+        if (current != null) {
+            System.out.print(current.data + "-");
             infixOrder(current.leftChild);
 
             infixOrder(current.rightChild);
         }
     }
-//后序
+
+    //后序
     public void postOrder(Node current) {
-        if (current!=null){
+        if (current != null) {
             infixOrder(current.leftChild);
 
             infixOrder(current.rightChild);
-            System.out.print(current.data+"-");
+            System.out.print(current.data + "-");
         }
     }
 
-    public int maxHight(Node current){
-        int max=0;
-        int leftMax=0;
-        int rightMax=0;
-        if (current!=null){
+    public int maxHight(Node current) {
+        int max = 0;
+        int leftMax = 0;
+        int rightMax = 0;
+        if (current != null) {
             max++;
-            leftMax=maxHight(current.leftChild);
-            rightMax=maxHight(current.rightChild);
-            max+=leftMax>=rightMax?leftMax:rightMax;
+            leftMax = maxHight(current.leftChild);
+            rightMax = maxHight(current.rightChild);
+            max += leftMax >= rightMax ? leftMax : rightMax;
         }
         return max;
     }
+
     public Node findMax() {
-        Node maxNode=root;
-        Node curr=root;
-        while (curr!=null){
-            maxNode=curr;
-            curr=curr.rightChild;
+        Node maxNode = root;
+        Node curr = root;
+        while (curr != null) {
+            maxNode = curr;
+            curr = curr.rightChild;
 
         }
         return maxNode;
     }
 
     public Node findMin() {
-        Node minNode=root;
-        Node curr=root;
-        while (curr!=null){
-            minNode=curr;
-            curr=curr.leftChild;
+        Node minNode = root;
+        Node curr = root;
+        while (curr != null) {
+            minNode = curr;
+            curr = curr.leftChild;
 
         }
         return minNode;
     }
+
     public boolean delete1(int key) {
-        Node curr=root;
-        Node parent=root;
-        boolean left=false;
-        while (curr.data!=key){
-            parent=curr;
-            if (curr.data>key){
-                curr=curr.leftChild;
-                left=true;
-            }else{
-                curr=curr.rightChild;
-                left=false;
+        Node curr = root;
+        Node parent = root;
+        boolean left = false;
+        while (curr.data != key) {
+            parent = curr;
+            if (curr.data > key) {
+                curr = curr.leftChild;
+                left = true;
+            } else {
+                curr = curr.rightChild;
+                left = false;
             }
         }
-        if (curr==null){
+        if (curr == null) {
             return false;
         }
-        if (curr.leftChild==null&&curr.rightChild==null){
-            if (curr==root){
-                root=null;
+        if (curr.leftChild == null && curr.rightChild == null) {
+            if (curr == root) {
+                root = null;
                 return true;
             }
-            if (left){
-                parent.leftChild=null;
-            }else{
-                parent.rightChild=null;
-            }
-          return true;
-        }
-        if (curr.leftChild==null&&curr.rightChild!=null){
-            if (curr==root){
-                root=curr.rightChild;
-            }else if(left){
-                parent.leftChild=curr.rightChild;
-            }else{
-                parent.rightChild=curr.rightChild;
+            if (left) {
+                parent.leftChild = null;
+            } else {
+                parent.rightChild = null;
             }
             return true;
         }
-        if (curr.leftChild!=null&&curr.rightChild==null){
-            if (curr==root){
-                root=curr.leftChild;
-            }else if(left){
-                parent.leftChild=curr.leftChild;
-            }else{
-                parent.rightChild=curr.leftChild;
+        if (curr.leftChild == null && curr.rightChild != null) {
+            if (curr == root) {
+                root = curr.rightChild;
+            } else if (left) {
+                parent.leftChild = curr.rightChild;
+            } else {
+                parent.rightChild = curr.rightChild;
+            }
+            return true;
+        }
+        if (curr.leftChild != null && curr.rightChild == null) {
+            if (curr == root) {
+                root = curr.leftChild;
+            } else if (left) {
+                parent.leftChild = curr.leftChild;
+            } else {
+                parent.rightChild = curr.leftChild;
             }
             return true;
         }
         //有两个子节点,如果要删除得节点在panrent得左边，就左右右右右找到当前左节点最右的子节点，赋值，删除最右的子节点，反过来是右左左左左
-        if(curr.leftChild!=null&&curr.rightChild!=null){
-            if (left){
-                curr=curr.leftChild;
-               /* if (curr.rightChild==null){
-                    parent.leftChild=curr.leftChild;
-                }*/
-                Node par=curr;
-                while(curr.rightChild!=null){
-                    par=curr;
-                    curr=curr.rightChild;
-                }
-                parent.leftChild.data=curr.data;
-                par.rightChild=null;
-            }else{
-                curr=curr.rightChild;
-               /* if (curr.leftChild==null){
-                    parent.rightChild=curr.rightChild;
-                }*/
-                Node par=curr;
-                while(curr.leftChild!=null){
-                    par=curr;
-                    curr=curr.leftChild;
-                }
-                parent.rightChild.data=curr.data;
-                par.leftChild=null;
+        if (curr.leftChild != null && curr.rightChild != null) {
+            curr = curr.leftChild;
+            Node par = curr;
+            while (curr.rightChild != null) {
+                par = curr;
+                curr = curr.rightChild;
             }
+            if (left) {
+                parent.leftChild.data = curr.data;
+            } else {
+                parent.rightChild.data = curr.data;
+            }
+            par.rightChild = null;
             return true;
         }
         return false;
     }
+
     public boolean delete(int key) {
         Node current = root;
         Node parent = root;
         boolean isLeftChild = false;
         //查找删除值，找不到直接返回false
-        while(current.data != key){
+        while (current.data != key) {
             parent = current;
-            if(current.data > key){
+            if (current.data > key) {
                 isLeftChild = true;
                 current = current.leftChild;
-            }else{
+            } else {
                 isLeftChild = false;
                 current = current.rightChild;
             }
-            if(current == null){
+            if (current == null) {
                 return false;
             }
         }
         //如果当前节点没有子节点
-        if(current.leftChild == null && current.rightChild == null){
-            if(current == root){
+        if (current.leftChild == null && current.rightChild == null) {
+            if (current == root) {
                 root = null;
-            }else if(isLeftChild){
+            } else if (isLeftChild) {
                 parent.leftChild = null;
-            }else{
+            } else {
                 parent.rightChild = null;
             }
             return true;
 
             //当前节点有一个子节点，右子节点
-        }else if(current.leftChild == null && current.rightChild != null){
-            if(current == root){
+        } else if (current.leftChild == null && current.rightChild != null) {
+            if (current == root) {
                 root = current.rightChild;
-            }else if(isLeftChild){
+            } else if (isLeftChild) {
                 parent.leftChild = current.rightChild;
-            }else{
+            } else {
                 parent.rightChild = current.rightChild;
             }
             return true;
             //当前节点有一个子节点，左子节点
-        }else if(current.leftChild != null && current.rightChild == null){
-            if(current == root){
+        } else if (current.leftChild != null && current.rightChild == null) {
+            if (current == root) {
                 root = current.leftChild;
-            }else if(isLeftChild){
+            } else if (isLeftChild) {
                 parent.leftChild = current.leftChild;
-            }else{
+            } else {
                 parent.rightChild = current.leftChild;
             }
             return true;
-        }else{
+        } else {
             //当前节点存在两个子节点
             Node successor = getSuccessor(current);
-            if(current == root){
-                root= successor;
-            }else if(isLeftChild){
+            if (current == root) {
+                root = successor;
+            } else if (isLeftChild) {
                 parent.leftChild = successor;
-            }else{
+            } else {
                 parent.rightChild = successor;
             }
             successor.leftChild = current.leftChild;
@@ -249,17 +243,17 @@ public class MyTree implements Tree{
 
     }
 
-    public Node getSuccessor(Node delNode){
+    public Node getSuccessor(Node delNode) {
         Node successorParent = delNode;
         Node successor = delNode;
         Node current = delNode.rightChild;
-        while(current != null){
+        while (current != null) {
             successorParent = successor;
             successor = current;
             current = current.leftChild;
         }
         //后继节点不是删除节点的右子节点，将后继节点替换删除节点
-        if(successor != delNode.rightChild){
+        if (successor != delNode.rightChild) {
             successorParent.leftChild = successor.rightChild;
             successor.rightChild = delNode.rightChild;
         }
@@ -286,9 +280,9 @@ public class MyTree implements Tree{
         bt.insert(65);
         bt.insert(110);
 
-          bt.infixOrder(bt.root);
+        bt.infixOrder(bt.root);
         bt.delete1(10);//删除没有子节点的节点
-       bt.delete1(30);//删除有一个子节点的节点
+        bt.delete1(30);//删除有一个子节点的节点
         bt.delete1(80);//删除有两个子节点的节点
         System.out.println(bt.maxHight(bt.root));
         System.out.println(bt.findMax().data);
